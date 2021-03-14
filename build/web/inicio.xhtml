@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./base.xhtml">
+
+            <ui:define name="top">
+                <img id="img" src="resources/images/logo.png" width="250px"/>
+            </ui:define>
+
+            <ui:define name="left">
+                <p:menu>
+                    <p:submenu label="Tablas">
+                        <p:menuitem value="Tickets" target="iframe" url="/faces/tickets/List.xhtml" />
+                        <p:menuitem value="Estados" target="iframe" url="/faces/estados/List.xhtml" />
+                        <p:menuitem value="Quejas" target="iframe" url="/faces/quejas/List.xhtml" />
+                        <p:menuitem value="Sectores" target="iframe" url="/faces/sectores/List.xhtml" />
+                    </p:submenu>
+                </p:menu>
+                <p:menu>
+                    <p:submenu label="Estado">
+                        <p:menuitem value="Abierto" target="iframe" url="/faces/tickets/List.xhtml" />
+                        <p:menuitem value="Cerrado" target="iframe" url="/faces/estados/List.xhtml" />
+                        <p:menuitem value="Prioritario" target="iframe" url="/faces/quejas/List.xhtml" />
+                    </p:submenu>
+                </p:menu>
+            </ui:define>
+
+            <ui:define name="content">
+                <iframe name="iframe" height="100%" width="100%"/>
+            </ui:define>
+
+            <ui:define name="bottom">
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

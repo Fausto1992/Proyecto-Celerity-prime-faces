@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="../base.xhtml">
+
+        <ui:define name="top">
+            <img id="img" src="resources/images/logo.png" width="250px"/>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="filtrarForm">
+                <p:menu>
+                    <p:submenu label="Filtrar por Estado">
+                        <p:menuitem>
+                            <p:selectOneMenu id="categoria" value="#{ticketsController.filtro}">
+                                    <f:selectItem itemLabel="Todos" itemValue="Todos"/>
+                                    <f:selectItem itemLabel="Abiertos" itemValue="Abierto"/>
+                                    <f:selectItem itemLabel="Cerrados" itemValue="Cerrado"/>
+                                    <f:selectItem itemLabel="Atrasados" itemValue="Atrasado"/>
+                                    <f:selectItem itemLabel="Escalados" itemValue="Escalado"/>
+                                    <f:selectItem itemLabel="Prioridad Alta" itemValue="Prioridad Alta"/>
+                                    <p:ajax update=":TicketsListForm:datalist" event="change" listener="#{ticketsController.filtrar()}"/>
+                            </p:selectOneMenu>
+                        </p:menuitem>
+                    </p:submenu>
+                </p:menu>
+            </h:form>
+        </ui:define>
+        
+        <ui:define name="content">
+            
+            <h:form id="TicketsListForm">
+                <h2 style="text-align: center;">Lista Tickets</h2>
+                <p:panel>
+                    <p:dataTable id="datalist" value="#{ticketsController.items}" var="item"
+                                 selectionMode="single" selection="#{ticketsController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTicketsTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTicketsTitle_nombres}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nombres}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTicketsTitle_fecha}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fecha}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTicketsTitle_estado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estado}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTicketsTitle_sector}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sector}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListTicketsTitle_queja}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.queja}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{ticketsController.prepareCreate}" update=":TicketsCreateForm" oncomplete="PF('TicketsCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":TicketsViewForm" oncomplete="PF('TicketsViewDialog').show()" disabled="#{empty ticketsController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":TicketsEditForm" oncomplete="PF('TicketsEditDialog').show()" disabled="#{empty ticketsController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{ticketsController.destroy}" update=":growl,datalist" disabled="#{empty ticketsController.selected}">
+                                <p:confirm header="Confirmación" message="¿Eliminar ticket?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Si, Eliminar" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                                <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                            </p:confirmDialog>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

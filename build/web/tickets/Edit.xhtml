@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TicketsEditDlg" widgetVar="TicketsEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditTicketsTitle}">
+            <h:form id="TicketsEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{ticketsController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditTicketsLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{ticketsController.selected.id}" title="#{bundle.EditTicketsTitle_id}" required="true" requiredMessage="#{bundle.EditTicketsRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditTicketsLabel_nombres}" for="nombres" />
+                        <p:inputText id="nombres" value="#{ticketsController.selected.nombres}" title="#{bundle.EditTicketsTitle_nombres}" required="true" requiredMessage="#{bundle.EditTicketsRequiredMessage_nombres}"/>
+                        <p:outputLabel value="#{bundle.EditTicketsLabel_fecha}" for="fecha" />
+                        <p:calendar id="fecha" pattern="MM/dd/yyyy" value="#{ticketsController.selected.fecha}" title="#{bundle.EditTicketsTitle_fecha}" required="true" requiredMessage="#{bundle.EditTicketsRequiredMessage_fecha}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditTicketsLabel_estado}" for="estado" />
+                        <p:selectOneMenu id="estado" value="#{ticketsController.selected.estado}" required="true" requiredMessage="#{bundle.EditTicketsRequiredMessage_estado}">
+                            <f:selectItem itemLabel="Abierto" itemValue="Abierto"/>
+                            <f:selectItem itemLabel="Cerrado" itemValue="Cerrado"/>
+                            <f:selectItem itemLabel="Atrasado" itemValue="Atrasado"/>
+                            <f:selectItem itemLabel="Escalado" itemValue="Escalado"/>
+                            <f:selectItem itemLabel="Prioridad Alta" itemValue="Prioridad Alta"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditTicketsLabel_sector}" for="sector" />
+                        <p:inputText id="sector" value="#{ticketsController.selected.sector}" title="#{bundle.EditTicketsTitle_sector}" required="true" requiredMessage="#{bundle.EditTicketsRequiredMessage_sector}"/>
+                        <p:outputLabel value="#{bundle.EditTicketsLabel_queja}" for="queja" />
+                        <p:inputText id="queja" value="#{ticketsController.selected.queja}" title="#{bundle.EditTicketsTitle_queja}" required="true" requiredMessage="#{bundle.EditTicketsRequiredMessage_queja}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{ticketsController.update}" value="#{bundle.Save}" update="display,:TicketsListForm:datalist,:growl" oncomplete="handleSubmit(args, 'TicketsEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TicketsEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
